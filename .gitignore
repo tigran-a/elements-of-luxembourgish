@@ -1,0 +1,69 @@
+# LaTeX files to ignore
+
+# Compiler-generated files
+# -------------------------
+# Log files
+*.log
+# Auxiliary files
+*.aux
+# Table of contents/list of figures/tables data
+*.toc
+*.lof
+*.lot
+# Bibliography files
+*.bbl
+*.blg
+*.nav
+*.out
+*.snm
+# Index files
+*.idx
+*.ind
+*.ilg
+# Synctex (source/output synchronization)
+*.synctex.gz
+*.synctex(.$)
+# Drafts/versions
+*.dvi
+*.ps
+# Other common temporary or auxiliary files
+*.fls
+*.fdb_latexmk
+*-blx.bib
+_minted-*
+
+# Editor/IDE generated files
+# --------------------------
+# TeXShop
+.texshop/
+# TeXstudio
+*.txs
+# Kile
+*.mtc*
+# LaTeX Workshop (VSCode)
+.vscode/
+# General temporary files
+*~
+.#*
+\#*
+
+# Backup/Auto-save files
+# ----------------------
+*.bak
+*.old
+*.sav
+
+# Final output files (usually PDF)
+# --------------------------------
+# Only ignore if you don't want to commit the compiled PDF
+# If you DO want to commit the PDF, remove the next line.
+*.pdf
+
+# Custom and less common files
+# ----------------------------
+# LyX temporary files (if you use LyX)
+*.lyx~
+*.lyx.backup
+
+# XeTeX/LuaTeX specific (often covered by .log, but good to be explicit)
+# *.gz (sometimes used for compressed aux files)

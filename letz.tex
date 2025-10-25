@@ -1,0 +1,40 @@
+\documentclass[11pt, a4paper]{book}
+
+% --- UNIVERSAL PREAMBLE BLOCK ---
+% Setting paper size and margins for a balanced look
+\usepackage[a4paper, top=2.5cm, bottom=2.5cm, left=2cm, right=2cm]{geometry}
+\usepackage{fontspec}
+\usepackage{amsmath}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+
+% Using Babel and Noto Fonts for multi-language support (Germanic + French roots)
+\usepackage[english, bidi=basic, provide=*]{babel}
+\babelprovide[import, onchar=ids fonts]{english} % Latin characters for Lëtzebuergesch
+\babelprovide[import, onchar=ids fonts]{french}  % For notes in French
+
+% Set default/Latin font to Sans Serif (clean and modern for learning)
+\babelfont{rm}{Noto Sans}
+% Set a more professional math font
+\babelfont{sf}{Noto Sans}
+
+% Customization for a nice, clean document
+\definecolor{geminiBlue}{HTML}{005691}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{1em}
+\title{\vspace{-3em}\textbf{\Huge Lëtzebuergesch}}
+\author{\large a random course }
+\date{Updated: \today}
+
+\begin{document}
+\maketitle
+\thispagestyle{empty}
+
+\tableofcontents
+\newpage
+
+\include{lessons/lesson1}
+\include{lessons/lesson2}
+
+\end{document}
