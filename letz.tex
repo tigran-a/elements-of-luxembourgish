@@ -8,6 +8,7 @@
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{xcolor}
+\usepackage{multicol}
 
 % Using Babel and Noto Fonts for multi-language support (Germanic + French roots)
 \usepackage[english, bidi=basic, provide=*]{babel}
@@ -23,6 +24,7 @@
 \definecolor{geminiBlue}{HTML}{005691}
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{1em}
+\renewcommand{\thesection}{\Roman{section}}
 \title{\vspace{-3em}\textbf{\Huge Lëtzebuergesch}}
 \author{\large a random course }
 \date{Updated: \today}
@@ -36,5 +38,9 @@
 
 \include{lessons/lesson1}
 \include{lessons/lesson2}
-
+\include{lessons/lesson3}
+\include{lessons/lesson4}
+\include{lessons/lesson5}
+\include{lessons/lesson6}
+%\include{vokab}
 \end{document}
