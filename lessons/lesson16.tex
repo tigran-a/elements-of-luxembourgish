@@ -1,0 +1,292 @@
+\chapter{Leçon 16}
+
+\section{D'Deeg vun der Woch (Days of the Week / Les jours de la semaine)}
+
+Hei sinn d'Deeg vun der Woch. Bedenkt datt et dacks verschidde Schreifweisen an Nimm gëtt (mat -deg oder -den). \\
+Here are the days of the week. Note that there are often different spellings (with -deg or -den). \\
+Voici les jours de la semaine. Notez qu'il y a souvent différentes orthographes (avec -deg ou -den).
+
+\begin{itemize}
+    \item \textbf{Méindeg / Méinden} (Monday / Lundi)
+    \item \textbf{Dënschdeg / Dënschden} (Tuesday / Mardi)
+    \item \textbf{Mëttwoch} (Wednesday / Mercredi)
+    \item \textbf{Donneschdeg / Donneschden} (Thursday / Jeudi)
+    \item \textbf{Freideg / Freiden} (Friday / Vendredi)
+    \item \textbf{Samsdeg / Samschdeg / Samsden / Samschden} (Saturday / Samedi)
+    \item \textbf{Sonndeg / Sonnden} (Sunday / Dimanche)
+\end{itemize}
+
+\subsection*{Zäitlinn (Timeline / Ligne du temps)}
+
+\begin{center}
+\begin{tikzpicture}[every node/.style={align=center, font=\sffamily}]
+    % Draw timeline
+    \draw[thick, ->] (-6.5,0) -- (6.5,0);
+    
+    % Draw ticks and nodes explicitly to avoid macro expansion issues in TikZ foreach
+    % virugëschter (-5)
+    \draw[thick] (-5,0.2) -- (-5,-0.2);
+    \node[above] at (-5,0.3) {\small\bfseries virugëschter\\(Donneschdeg)};
+    \node[below, text=gray] at (-5,-0.3) {\scriptsize day before yesterday\\avant-hier};
+
+    % gëschter (-2.5)
+    \draw[thick] (-2.5,0.2) -- (-2.5,-0.2);
+    \node[above] at (-2.5,0.3) {\small\bfseries gëschter\\(Freideg)};
+    \node[below, text=gray] at (-2.5,-0.3) {\scriptsize yesterday\\hier};
+
+    % haut (0)
+    \draw[thick] (0,0.2) -- (0,-0.2);
+    \node[above] at (0,0.3) {\small\bfseries haut\\(Samsdeg)};
+    \node[below, text=gray] at (0,-0.3) {\scriptsize today\\aujourd'hui};
+
+    % muer (2.5)
+    \draw[thick] (2.5,0.2) -- (2.5,-0.2);
+    \node[above] at (2.5,0.3) {\small\bfseries muer\\(Sonndeg)};
+    \node[below, text=gray] at (2.5,-0.3) {\scriptsize tomorrow\\demain};
+
+    % iwwermuer (5)
+    \draw[thick] (5,0.2) -- (5,-0.2);
+    \node[above] at (5,0.3) {\small\bfseries iwwermuer\\(Méindeg)};
+    \node[below, text=gray] at (5,-0.3) {\scriptsize day after tomorrow\\après-demain};
+    
+    % Example pointers
+    \node[above=1.5cm, text=geminiBlue, font=\bfseries] (qx) at (0,0) {Wat ass haut fir en Dag?};
+    \draw[->, geminiBlue, thick] (qx) -- (0,0.8);
+
+    \node[below=1.6cm, text=purple, font=\bfseries] (qy) at (2.5,0) {Wat ass muer?};
+    \draw[->, purple, thick] (qy) -- (2.5,-1.2);
+
+    \node[below=1.6cm, text=magenta, font=\bfseries] (qz) at (-2.5,0) {Wat war gëschter?};
+    \draw[->, magenta, thick] (qz) -- (-2.5,-1.2);
+\end{tikzpicture}
+\end{center}
+
+\begin{itemize}
+    \item \textbf{Wat ass haut fir en Dag? / Wat fir en Dag ass haut?} \\
+    (What day is it today? / Quel jour sommes-nous aujourd'hui ?) \\
+    \textit{Haut ass Samschdeg. (Today is Saturday. / Aujourd'hui c'est samedi.)}
+    \item \textbf{Wat ass muer?} \\
+    (What is tomorrow? / C'est quoi demain ?) \\
+    \textit{Muer ass Sonndeg. (Tomorrow is Sunday. / Demain c'est dimanche.)}
+    \item \textbf{Wat war gëschter?} \\
+    (What was yesterday? / C'était quoi hier ?) \\
+    \textit{Gëschter war Freideg. (Yesterday was Friday. / Hier c'était vendredi.)}
+    \item \textbf{Wat war virugëschter?} \\
+    (What was the day before yesterday? / C'était quoi avant-hier ?) \\
+    \textit{Virugëschter war Donneschdeg. (The day before yesterday was Thursday. / Avant-hier c'était jeudi.)}
+    \item \textbf{Wat ass iwwermuer?} \\
+    (What is the day after tomorrow? / C'est quoi après-demain ?) \\
+    \textit{Iwwermuer ass Méindeg. (The day after tomorrow is Monday. / Après-demain ce sera lundi.)}
+\end{itemize}
+
+\section{Froewierder (Question words / Mots interrogatifs)}
+
+An dëser Lektioun weise mir wéi ee verschidde Froewierder benotzt. \\
+In this lesson, we show how to use several question words. \\
+Dans cette leçon, nous montrons comment utiliser plusieurs mots interrogatifs.
+
+\subsection{Wat (What / Que, Quoi)}
+
+"Wat" gëtt benotzt fir no Saachen oder Aktivitéiten ze froen. \\
+"Wat" is used to ask about things or activities. \\
+« Wat » est utilisé pour poser des questions sur des choses ou des activités.
+
+\begin{itemize}
+    \item \textbf{Wat kaacht den Alex?} \\
+    (What is Alex cooking? / Que cuisine Alex ?) \\
+    \textit{Hie kaacht Poulet. (He is cooking chicken. / Il cuisine du poulet.)}
+    
+    \item \textbf{Wat méchs du?} \\
+    (What are you doing? / Que fais-tu ?) \\
+    \textit{Ech schaffen hei. (I work here. / Je travaille ici.)}
+    
+    \item \textbf{Wat ass (hei) lass?} \\
+    (What's going on (here)? / Que se passe-t-il (ici) ?) 
+    
+    \item \textbf{Wat?} \\
+    (What? / Quoi ?) \textit{Opgepasst: Dat ass net ganz héiflech! / Warning: This is not very polite! / Attention : Ce n'est pas très poli !} \\
+    \textit{Besser (Better / Mieux): Wéi wannechgelift? (Pardon? / Pardon ?)}
+    
+    \item \textbf{Wat wëlls du drénken?} \\
+    (What do you want to drink? / Que veux-tu boire ?) \\
+    \textit{Ech huelen e Waasser, wgl. (I'll have a water, please. / Je prends une eau, s.v.p.)}
+\end{itemize}
+
+\subsection{Wat fir en / eng... oder Wéi en / eng... (Which, What kind of / Quel, Quelle)}
+
+Dës Ausdréck benotzt ee fir eng Choix ze froen oder Detailer iwwer eppes ze kréien. \\
+These expressions are used to ask for a choice or details about something. \\
+Ces expressions sont utilisées pour demander un choix ou des détails sur quelque chose.
+
+\begin{itemize}
+    \item \textbf{Wéi eng Faarf?} \\
+    (Which color? / Quelle couleur ?)
+    
+    \item \textbf{Wat ass haut fir en Dag? / Wat fir en Dag ass haut?} \\
+    (What day is it today? / Quel jour sommes-nous aujourd'hui ?) \\
+    \textit{Haut ass Samschdeg. (Today is Saturday. / Aujourd'hui c'est samedi.)}
+    
+    \item \textbf{Wéi en Auto hues du?} \\
+    (Which car do you have? / Quelle voiture as-tu ?)
+    
+    \item \textbf{Wat fir e Buch lies du grad?} \\
+    (What kind of book are you reading right now? / Quel genre de livre lis-tu en ce moment ?)
+    
+    \item \textbf{Wéi eng Gréisst hutt Dir?} \\
+    (What size do you have (wear)? / Quelle taille faites-vous ?) \\
+    \textit{Ech hu Gréisst 42. (I am size 42. / Je fais du 42.)}
+\end{itemize}
+
+\subsection{Wou (Where / Où)}
+
+"Wou" gëtt benotzt fir no enger Plaz oder enger Positioun ze froen. \\
+"Wou" is used to ask about a place or position. \\
+« Wou » est utilisé pour poser des questions sur un lieu ou une position.
+
+\begin{itemize}
+    \item \textbf{Wou wunns du?} \\
+    (Where do you live? / Où habites-tu ?) \\
+    \textit{Ech wunnen an der Stad. (I live in the city. / J'habite en ville.)}
+    
+    \item \textbf{Wou ass d'Buch?} \\
+    (Where is the book? / Où est le livre ?) \\
+    \textit{Et läit op dem Dësch. (It is lying on the table. / Il est posé sur la table.)}
+    
+    \item \textbf{Wou ass mäi Brëll?} \\
+    (Where are my glasses? / Où sont mes lunettes ?) \\
+    \textit{Op dem Kapp! (On your head! / Sur ta tête !)}
+    
+    \item \textbf{Wou ass d'Gare, wgl.?} \\
+    (Where is the train station, please? / Où est la gare, s.v.p. ?)
+    
+    \item \textbf{Wou schaffs du?} \\
+    (Where do you work? / Où travailles-tu ?)
+\end{itemize}
+
+\subsection{Vu wou (From where / D'où)}
+
+"Vu wou" gëtt benotzt fir no der Hierkonft (Origin) ze froen. \\
+"Vu wou" is used to ask about the origin. \\
+« Vu wou » est utilisé pour poser des questions sur l'origine.
+
+\begin{itemize}
+    \item \textbf{Vu wou kënns du?} \\
+    (Where are you from? / D'où viens-tu ?) \\
+    \textit{Ech komme vu Frankräich. (I come from France. / Je viens de France.)}
+    
+    \item \textbf{Vu wou rufft Dir un?} \\
+    (Where are you calling from? / D'où appelez-vous ?)
+    
+    \item \textbf{Vu wou hues du dat?} \\
+    (Where did you get that from? / D'où as-tu ça ?)
+\end{itemize}
+
+\subsection{Wouhin / Wuer (Where to / Vers où, Où (direction))}
+
+Dës Wierder froen no enger Richtung oder enger Destinatioun. \\
+These words ask about a direction or destination. \\
+Ces mots posent des questions sur une direction ou une destination.
+
+\begin{itemize}
+    \item \textbf{Wou gi mir hin?} \\
+    (Where are we going? / Où allons-nous ?)
+    
+    \item \textbf{Wouhi muss ee goe fir e Bréif ze schécken?} \\
+    (Where must one go to send a letter? / Où doit-on aller pour envoyer une lettre ?) \\
+    \textit{Op d'Post. (To the post office. / À la poste.)}
+    
+    \item \textbf{Wouhi fiers du?} \\
+    (Where are you driving to? / Où vas-tu (en conduisant) ?) \\
+    \textit{Ech fueren heem. (I am driving home. / Je rentre à la maison.)} \\
+    \textit{Ech fueren och heem, ech komme mat. (I am also driving home, I am coming with you. / Je rentre aussi, je viens avec toi.)}
+    
+    \item \textbf{Wouhi geet dee Wee?} \\
+    (Where does this path go? / Où mène ce chemin ?)
+    
+    \item \textbf{Wuer geet den Trapp?} \\
+    (Where do the stairs go? / Où mènent les escaliers ?)
+\end{itemize}
+
+\subsection{Wéi (How / Comment)}
+
+"Wéi" freet no der Aart a Weis oder engem Zoustand. \\
+"Wéi" asks about the manner or a condition. \\
+« Wéi » pose des questions sur la manière ou une condition.
+
+\begin{itemize}
+    \item \textbf{Wéi geet et?} \\
+    (How are you? / Comment ça va ?)
+    
+    \item \textbf{Wéi gëtt d'Wieder muer?} \\
+    (How will the weather be tomorrow? / Quel temps fera-t-il demain ?)
+    
+    \item \textbf{Wéi heeschst du?} \\
+    (What is your name? [lit: How are you called?] / Comment t'appelles-tu ?)
+    
+    \item \textbf{Wéi laang dauert dat?} \\
+    (How long does that take? / Combien de temps ça prend ?)
+    
+    \item \textbf{Wéi funktionéiert dat?} \\
+    (How does that work? / Comment ça fonctionne ?)
+\end{itemize}
+
+\section{E puer Wierder an Ausdréck (Some words and phrases / Quelques mots et expressions)}
+
+\begin{itemize}
+    \item \textbf{Ech hunn dat léiwer.} \\
+    (I prefer that. / Je préfère ça.)
+    
+    \item \textbf{Ech kache léiwer doheem.} \\
+    (I prefer cooking at home. / Je préfère cuisiner à la maison.)
+    
+    \item \textbf{Ech drénke Wäin, mee ech hu léiwer Béier.} \\
+    (I drink wine, but I prefer beer. / Je bois du vin, mais je préfère la bière.)
+    
+    \item \textbf{eng Drëpp} (eng Drëpp drénken) $\rightarrow$ \textit{Plural: Drëppen} \\
+    (A shot of liquor [Schnapps] / Une petite goutte [verre de goutte/schnaps])
+    
+    \item \textbf{eng Drëps} $\rightarrow$ \textit{Plural: Drëpsen} \\
+    (A drop [of liquid like water/rain] / Une goutte [d'un liquide comme l'eau/pluie])
+    
+    \item \textbf{Wéini gëtt et z'iessen?} \\
+    (When will there be food? / Quand est-ce qu'on mange ?) \\
+    \textit{Wann et fäerdeg ass. (When it's ready. / Quand c'est prêt.)} \\
+    \textit{An der Mëttesstonn. (At lunchtime. / À l'heure de midi.)}
+    
+    \item \textbf{Wéini ass den nächste Lëtzebuergesche Cours?} \\
+    (When is the next Luxembourgish course? / Quand est le prochain cours de luxembourgeois ?)
+    
+    \item \textbf{Firwat bass du net komm?} \\
+    (Why didn't you come? / Pourquoi n'es-tu pas venu ?)
+    
+    \item \textbf{Ech hunn dat net gesot.} \\
+    (I didn't say that. / Je n'ai pas dit ça.)
+    
+    \item \textbf{Turnschlappen = Turnschong} \\
+    (Sneakers, gym shoes / Baskets, chaussures de sport)
+\end{itemize}
+
+\section{Gell?}
+
+Den Ausdrock "Gell?" gëtt ganz dacks um Enn vun engem Saz benotzt, fir eng Zoustëmmung (Bestätegung) ze froen. Et entsprécht dem "N'est-ce pas ?" op Franséisch oder "Right? / Isn't it?" op Englesch. \\
+The expression "Gell?" is very often used at the end of a sentence to ask for agreement or confirmation. \\
+L'expression « Gell ? » est très souvent utilisée à la fin d'une phrase pour demander une confirmation.
+
+Ofhängeg dovun, mat wiem Dir schwätzt, gëtt dëst Wuert ugepasst (konjugéiert): \\
+Depending on who you are talking to, this word adapts (is conjugated): \\
+Selon la personne à qui vous parlez, ce mot s'adapte (se conjugue) :
+
+\begin{itemize}
+    \item \textbf{Gell? / Në?} \\
+    (General form / Forme générale)
+    
+    \item \textbf{Gelldu? / Gedu? / Gelu? / Nedu?} \\
+    \textit{Et benotzt ee mat "du". (Familiar form / Forme familière)} \\
+    Beispill: Du kënns muer och op d'Party, \textbf{gelldu}? \\
+    (You are also coming to the party tomorrow, right? / Tu viens aussi à la fête demain, n'est-ce pas ?)
+    
+    \item \textbf{Gellt? / Gediert? / Gelldiert? / Nediert?} \\
+    \textit{Et benotzt ee mat "Dir". (Formal/Plural form / Forme formelle/pluriel)} \\
+    Beispill: Dir hutt d'Hausaufgaben gemaach, \textbf{gellt}? \\
+    (You did the homework, right? / Vous avez fait les devoirs, n'est-ce pas ?)
+\end{itemize}
