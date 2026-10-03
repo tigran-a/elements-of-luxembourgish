@@ -11,30 +11,40 @@ An open-source, community-driven textbook and reference series for learning the 
 
 ## Download Pre-compiled PDFs
 
-If you just want to read the book, you do not need to install LaTeX:
-* Download the latest compiled PDFs directly from the **[GitHub Releases](https://github.com/tigran-a/elements-of-luxembourgish/releases)** page.
+If you just want to read the book, you do not need to install LaTeX. You can download the pre-compiled PDFs directly:
+
+| Volume | Scope | Direct Download Link | Status |
+| :--- | :--- | :--- | :--- |
+| **Volume 1** | Lessons 1 – 20 | [**Download `letz.pdf`**](https://github.com/tigran-a/elements-of-luxembourgish/releases/download/v0.1.35/letz.pdf) | Finalized Release |
+| **Volume 2** | Lessons 21 – 31 | [**Download `letz2.pdf`**](https://github.com/tigran-a/elements-of-luxembourgish/releases/download/v0.1.35/letz2.pdf) | Finalized Release |
+| **Volume 3** | Lessons 32 – 35+ | [**Download `letz3.pdf`**](https://github.com/tigran-a/elements-of-luxembourgish/releases/download/v0.1.35/letz3.pdf) | Active / Growing |
+
+> **Note on Volumes:** The division into Volumes 1, 2, and 3 is **chronological, not level-specific**. Volume 1 is not "lower level" or strictly A1 compared to Volume 3. Rather, each volume contains a rich, accessible cross-section of everyday themes, grammar points, illustrated vocabulary, and conversational dialogues compiled as the course progresses. Volumes 1 and 2 are finalized and stable; new lessons are continuously added to Volume 3.
 
 ---
 
-## Course Architecture
+## Linguistic Methodology & Data Sources
 
-The textbook is organized into three progressive volumes:
+To ensure highest orthographic and lexical standard, the materials in this course are systematically developed and cross-referenced with official Luxembourgish linguistic resources:
 
-| Volume | Source File | Compiled PDF | Lessons | Focus & Topics |
-| :--- | :--- | :--- | :--- | :--- |
-| **Volume 1** | `letz.tex` | `letz.pdf` | **1 – 20** | **Foundations & Everyday Life**: Pronunciation basics, family, house, work, orientation, shopping, basic tenses, and the illustrated picture dictionary. |
-| **Volume 2** | `letz2.tex` | `letz2.pdf` | **21 – 31** | **Intermediate Topics**: Reflexive verbs, public services, health & doctor visits, leisure, expanded vocabulary, and complex sentence structures. |
-| **Volume 3** | `letz3.tex` | `letz3.pdf` | **32 – 35+** | **Advanced & Conversational**: Civic & cultural events, fine-grained pronunciation (phonetic IPA for diphthongs), modal vs. prepositional infinitives, and conversational practice. |
+* **[Lëtzebuerger Online Dictionnaire (LOD)](https://lod.lu/)**:
+  Used as the primary lexical authority for official spellings, word genders, plural forms, complete verb conjugation paradigms, and International Phonetic Alphabet (IPA) pronunciations.
+* **[Saz.lu Schreifassistent](https://saz.lu/)**:
+  Used to validate sentences for standard orthography and strict compliance with the **Eifeler Regel** (*n-Rule*), ensuring grammatical accuracy across all dialogues and exercises.
+* **[Saz.lu Concordancer](https://saz.lu/concordancer)**:
+  Used to source authentic, real-world Luxembourgish sentences from national media and institutional corpora (LOD, RTL, government publications) with French, English, and German translations.
+* **[Spellchecker.lu](https://spellchecker.lu/)**:
+  Used as an additional validation layer for Luxembourgish vocabulary and morphology.
 
 ---
 
 ## Key Features
 
 * **Trilingual Structure**: All explanations, vocabulary glosses, and grammar notes are provided in Luxembourgish, French, and English.
-* **Rigorous Eifeler Regel (n-Rule)**: Strict grammatical compliance with official Luxembourgish spelling regulations.
-* **Illustrated Picture Dictionary**: Custom 300 DPI illustrations for concrete vocabulary items (`vokab_300dpi/`).
-* **LOD Alignment**: Pronunciations and word entries cross-checked against the official *Lëtzebuerger Online Dictionnaire* ([lod.lu](https://lod.lu)).
-* **Interactive Exercises**: Fill-in-the-blank vocabulary, translations, and oral practice questions with full answer keys.
+* **Strict Eifeler Regel (n-Rule)**: Consistent application of official Luxembourgish sandhi rules (*n* retention and elision).
+* **Illustrated Picture Dictionary**: Custom 300 DPI vector-style illustrations for concrete vocabulary items (`vokab_300dpi/`).
+* **Practical Everyday Scenarios**: Realistic dialogues and Q&As reflecting everyday life in Luxembourg (work, neighborhood, administration, health, culture, hobbies).
+* **Interactive Exercises**: Fill-in-the-blank vocabulary tasks, translation exercises, and oral practice questions with complete solutions.
 
 ---
 
@@ -48,7 +58,7 @@ The textbook is organized into three progressive volumes:
 ├── letz2.tex              # Master document for Volume 2 (Lessons 21-31)
 ├── letz3.tex              # Master document for Volume 3 (Lessons 32+)
 ├── saz_spellcheck.py      # Automated spellchecker & Eifeler rule validator (saz.lu API)
-├── saz_concordancer.py    # Concordancer tool for authentic example sentences
+├── saz_concordancer.py    # Concordancer tool for authentic sentence corpus search
 ├── verify_lessons.py      # LOD database integrity checker
 ├── Makefile               # Convenient build automation commands
 ├── .github/workflows/     # GitHub Actions CI for automatic PDF compilation
@@ -59,7 +69,7 @@ The textbook is organized into three progressive volumes:
 
 ## Linguistic & Quality Assurance Tools
 
-The repository includes command-line tools to ensure orthographic accuracy:
+The repository includes command-line tools to assist contributors and learners:
 
 ### 1. Spellchecker & Eifeler Rule Validator
 Validates Luxembourgish text and grammar rules using the official [saz.lu](https://saz.lu) API:
