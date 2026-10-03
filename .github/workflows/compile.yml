@@ -1,0 +1,63 @@
+name: Build PDFs
+
+on:
+  push:
+    branches: [ main ]
+    tags: [ 'v*' ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install system fonts and LuaLaTeX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            texlive-latex-base \
+            texlive-latex-extra \
+            texlive-fonts-recommended \
+            texlive-fonts-extra \
+            texlive-luatex \
+            fonts-noto-core \
+            fonts-noto-extra
+
+      - name: Build Volume 1 (Lessons 1-20)
+        run: |
+          lualatex -interaction=nonstopmode letz.tex
+          lualatex -interaction=nonstopmode letz.tex
+
+      - name: Build Volume 2 (Lessons 21-31)
+        run: |
+          lualatex -interaction=nonstopmode letz2.tex
+          lualatex -interaction=nonstopmode letz2.tex
+
+      - name: Build Volume 3 (Lessons 32+)
+        run: |
+          lualatex -interaction=nonstopmode letz3.tex
+          lualatex -interaction=nonstopmode letz3.tex
+
+      - name: Upload Compiled PDFs
+        uses: actions/upload-artifact@v4
+        with:
+          name: elements-of-luxembourgish-pdfs
+          path: |
+            letz.pdf
+            letz2.pdf
+            letz3.pdf
+
+      - name: Release Assets (On Tags)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            letz.pdf
+            letz2.pdf
+            letz3.pdf
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

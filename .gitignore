@@ -42,6 +42,8 @@ _minted-*
 *.mtc*
 # LaTeX Workshop (VSCode)
 .vscode/
+# JetBrains
+.idea/
 # General temporary files
 *~
 .#*
@@ -55,15 +57,33 @@ _minted-*
 
 # Final output files (usually PDF)
 # --------------------------------
-# Only ignore if you don't want to commit the compiled PDF
-# If you DO want to commit the PDF, remove the next line.
+# PDF binaries are kept in GitHub Releases rather than git history
 *.pdf
 
-# Custom and less common files
-# ----------------------------
-# LyX temporary files (if you use LyX)
-*.lyx~
-*.lyx.backup
+# Audio recordings & classroom source tasks
+# -----------------------------------------
+*.m4a
+*.mp3
+*.wav
+*.ogg
+tasks/
+generic-tasks.txt
 
-# XeTeX/LuaTeX specific (often covered by .log, but good to be explicit)
-# *.gz (sometimes used for compressed aux files)
+# Temporary build & scratch directories
+# -------------------------------------
+tmp/
+scratch/
+tmpimg/
+nanobanana-output/
+lod_data/
+.antigravitycli/
+letz_tmp.tex
+letz_tmp_test.*
+
+# Python artifacts
+# ----------------
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
