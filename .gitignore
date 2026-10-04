@@ -79,6 +79,7 @@ lod_data/
 .antigravitycli/
 letz_tmp.tex
 letz_tmp_test.*
+.texcache/
 
 # Python artifacts
 # ----------------

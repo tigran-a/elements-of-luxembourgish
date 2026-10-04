@@ -8,6 +8,9 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -18,29 +21,42 @@ jobs:
       - name: Install system fonts and LuaLaTeX
         run: |
           sudo apt-get update
-          sudo apt-get install -y \
+          sudo apt-get install -y --no-install-recommends \
             texlive-latex-base \
+            texlive-latex-recommended \
             texlive-latex-extra \
             texlive-fonts-recommended \
-            texlive-fonts-extra \
+            texlive-pictures \
             texlive-luatex \
-            fonts-noto-core \
-            fonts-noto-extra
+            fonts-noto-core
+
+      - name: Cache LuaTeX font database
+        uses: actions/cache@v4
+        with:
+          path: ~/.texlive*/texmf-var/luatex-cache
+          key: ${{ runner.os }}-luatex-cache-v1
+          restore-keys: |
+            ${{ runner.os }}-luatex-cache-
+
+      - name: Initialize font index
+        run: |
+          sudo fc-cache -fv
+          luaotfload-tool --update --verbose=1
 
       - name: Build Volume 1 (Lessons 1-20)
         run: |
-          lualatex -interaction=nonstopmode letz.tex
-          lualatex -interaction=nonstopmode letz.tex
+          lualatex -interaction=nonstopmode -halt-on-error letz.tex || { echo "::error::LuaLaTeX Volume 1 pass 1 failed"; tail -n 100 letz.log; exit 1; }
+          lualatex -interaction=nonstopmode -halt-on-error letz.tex || { echo "::error::LuaLaTeX Volume 1 pass 2 failed"; tail -n 100 letz.log; exit 1; }
 
       - name: Build Volume 2 (Lessons 21-31)
         run: |
-          lualatex -interaction=nonstopmode letz2.tex
-          lualatex -interaction=nonstopmode letz2.tex
+          lualatex -interaction=nonstopmode -halt-on-error letz2.tex || { echo "::error::LuaLaTeX Volume 2 pass 1 failed"; tail -n 100 letz2.log; exit 1; }
+          lualatex -interaction=nonstopmode -halt-on-error letz2.tex || { echo "::error::LuaLaTeX Volume 2 pass 2 failed"; tail -n 100 letz2.log; exit 1; }
 
       - name: Build Volume 3 (Lessons 32+)
         run: |
-          lualatex -interaction=nonstopmode letz3.tex
-          lualatex -interaction=nonstopmode letz3.tex
+          lualatex -interaction=nonstopmode -halt-on-error letz3.tex || { echo "::error::LuaLaTeX Volume 3 pass 1 failed"; tail -n 100 letz3.log; exit 1; }
+          lualatex -interaction=nonstopmode -halt-on-error letz3.tex || { echo "::error::LuaLaTeX Volume 3 pass 2 failed"; tail -n 100 letz3.log; exit 1; }
 
       - name: Upload Compiled PDFs
         uses: actions/upload-artifact@v4
