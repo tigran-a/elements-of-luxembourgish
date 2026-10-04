@@ -49,15 +49,30 @@ jobs:
 
       - name: Build Volume 1 (Lessons 1-20)
         run: |
-          make vol1 || { echo "::error::Volume 1 compilation failed"; tail -n 100 letz.log; exit 1; }
+          if ! make vol1; then
+            echo "::error::Volume 1 compilation failed"
+            grep -n -C 3 "^!" letz.log | while IFS= read -r line; do echo "::error::$line"; done
+            tail -n 50 letz.log | while IFS= read -r line; do echo "::error::$line"; done
+            exit 1
+          fi
 
       - name: Build Volume 2 (Lessons 21-31)
         run: |
-          make vol2 || { echo "::error::Volume 2 compilation failed"; tail -n 100 letz2.log; exit 1; }
+          if ! make vol2; then
+            echo "::error::Volume 2 compilation failed"
+            grep -n -C 3 "^!" letz2.log | while IFS= read -r line; do echo "::error::$line"; done
+            tail -n 50 letz2.log | while IFS= read -r line; do echo "::error::$line"; done
+            exit 1
+          fi
 
       - name: Build Volume 3 (Lessons 32+)
         run: |
-          make vol3 || { echo "::error::Volume 3 compilation failed"; tail -n 100 letz3.log; exit 1; }
+          if ! make vol3; then
+            echo "::error::Volume 3 compilation failed"
+            grep -n -C 3 "^!" letz3.log | while IFS= read -r line; do echo "::error::$line"; done
+            tail -n 50 letz3.log | while IFS= read -r line; do echo "::error::$line"; done
+            exit 1
+          fi
 
       - name: Upload Compiled PDFs
         uses: actions/upload-artifact@v4
@@ -67,6 +82,16 @@ jobs:
             letz.pdf
             letz2.pdf
             letz3.pdf
+
+      - name: Upload Logs on Failure
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-logs
+          path: |
+            letz.log
+            letz2.log
+            letz3.log
 
       - name: Release Assets (On Tags)
         if: startsWith(github.ref, 'refs/tags/v')
