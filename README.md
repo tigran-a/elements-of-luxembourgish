@@ -53,13 +53,12 @@ To ensure highest orthographic and lexical standard, the materials in this cours
 ```text
 ├── lessons/               # Individual lesson LaTeX files (lesson1.tex - lesson35.tex)
 ├── vokab_300dpi/          # High-resolution (300 DPI) vocabulary dictionary images
-├── exercises/             # Supplementary topical worksheets (e.g., dative/accusative)
 ├── letz.tex               # Master document for Volume 1 (Lessons 1-20)
 ├── letz2.tex              # Master document for Volume 2 (Lessons 21-31)
 ├── letz3.tex              # Master document for Volume 3 (Lessons 32+)
 ├── saz_spellcheck.py      # Automated spellchecker & Eifeler rule validator (saz.lu API)
 ├── saz_concordancer.py    # Concordancer tool for authentic sentence corpus search
-├── verify_lessons.py      # LOD database integrity checker
+├── prepare_release.py     # Release asset preparation & dynamic volume link resolver
 ├── Makefile               # Convenient build automation commands
 ├── .github/workflows/     # GitHub Actions CI for automatic PDF compilation
 └── README.md              # Project documentation

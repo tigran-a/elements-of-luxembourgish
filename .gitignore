@@ -68,6 +68,7 @@ _minted-*
 *.ogg
 tasks/
 generic-tasks.txt
+exercises/
 
 # Temporary build & scratch directories
 # -------------------------------------
