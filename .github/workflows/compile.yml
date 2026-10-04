@@ -14,6 +14,9 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      TEXMFVAR: ${{ github.workspace }}/tmp/texmfvar
+      TEXMFCACHE: ${{ github.workspace }}/tmp/texmfvar
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -33,30 +36,28 @@ jobs:
       - name: Cache LuaTeX font database
         uses: actions/cache@v4
         with:
-          path: ~/.texlive*/texmf-var/luatex-cache
-          key: ${{ runner.os }}-luatex-cache-v1
+          path: tmp/texmfvar
+          key: ${{ runner.os }}-luatex-cache-v2
           restore-keys: |
             ${{ runner.os }}-luatex-cache-
 
       - name: Initialize font index
         run: |
+          mkdir -p "$TEXMFVAR"
           sudo fc-cache -fv
           luaotfload-tool --update --verbose=1
 
       - name: Build Volume 1 (Lessons 1-20)
         run: |
-          lualatex -interaction=nonstopmode -halt-on-error letz.tex || { echo "::error::LuaLaTeX Volume 1 pass 1 failed"; tail -n 100 letz.log; exit 1; }
-          lualatex -interaction=nonstopmode -halt-on-error letz.tex || { echo "::error::LuaLaTeX Volume 1 pass 2 failed"; tail -n 100 letz.log; exit 1; }
+          make vol1 || { echo "::error::Volume 1 compilation failed"; tail -n 100 letz.log; exit 1; }
 
       - name: Build Volume 2 (Lessons 21-31)
         run: |
-          lualatex -interaction=nonstopmode -halt-on-error letz2.tex || { echo "::error::LuaLaTeX Volume 2 pass 1 failed"; tail -n 100 letz2.log; exit 1; }
-          lualatex -interaction=nonstopmode -halt-on-error letz2.tex || { echo "::error::LuaLaTeX Volume 2 pass 2 failed"; tail -n 100 letz2.log; exit 1; }
+          make vol2 || { echo "::error::Volume 2 compilation failed"; tail -n 100 letz2.log; exit 1; }
 
       - name: Build Volume 3 (Lessons 32+)
         run: |
-          lualatex -interaction=nonstopmode -halt-on-error letz3.tex || { echo "::error::LuaLaTeX Volume 3 pass 1 failed"; tail -n 100 letz3.log; exit 1; }
-          lualatex -interaction=nonstopmode -halt-on-error letz3.tex || { echo "::error::LuaLaTeX Volume 3 pass 2 failed"; tail -n 100 letz3.log; exit 1; }
+          make vol3 || { echo "::error::Volume 3 compilation failed"; tail -n 100 letz3.log; exit 1; }
 
       - name: Upload Compiled PDFs
         uses: actions/upload-artifact@v4
