@@ -4,9 +4,27 @@ on:
   push:
     branches: [ main ]
     tags: [ 'v*' ]
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - 'LICENSE'
+      - 'saz_*.py'
+      - 'lod_*.py'
+      - 'verify_*.py'
   pull_request:
     branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - '.gitignore'
+      - 'LICENSE'
+      - 'saz_*.py'
   workflow_dispatch:
+    inputs:
+      force_rebuild:
+        description: 'Force rebuild of all volumes'
+        required: false
+        type: boolean
+        default: false
 
 permissions:
   contents: write
@@ -20,6 +38,92 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Detect Changed Dependencies per Volume
+        id: detect
+        run: |
+          python3 - << 'EOF'
+          import os, re, subprocess
+
+          def get_volume_deps(master_file):
+              if not os.path.exists(master_file):
+                  return set()
+              with open(master_file, "r", encoding="utf-8") as f:
+                  text = f.read()
+              lessons = [l + ("" if l.endswith(".tex") else ".tex") for l in re.findall(r"\\include\{([^}]+)\}", text)]
+              deps = set(lessons) | {master_file}
+              for l in lessons:
+                  if os.path.exists(l):
+                      with open(l, "r", encoding="utf-8") as f:
+                          c = f.read()
+                      for img in re.findall(r"\\includegraphics(?:\[.*?\])?\{([^}]+)\}", c):
+                          deps.add(img)
+                          if not img.endswith((".png", ".jpg", ".jpeg")):
+                              deps.add(img + ".png")
+                              deps.add(img + ".jpg")
+              return deps
+
+          def get_changed_files():
+              # Compare against previous commit
+              try:
+                  res = subprocess.run(["git", "diff", "--name-only", "HEAD~1", "HEAD"], capture_output=True, text=True, check=True)
+                  return set(line.strip() for line in res.stdout.splitlines() if line.strip())
+              except Exception as e:
+                  print(f"git diff warning: {e}")
+                  return None
+
+          changed = get_changed_files()
+          if changed is None:
+              print("Full rebuild triggered (could not determine diff).")
+              rebuild_v1, rebuild_v2, rebuild_v3 = True, True, True
+          else:
+              print("Files changed in this push:")
+              for f in sorted(changed):
+                  print(f"  - {f}")
+              
+              global_files = {"Makefile", ".github/workflows/compile.yml"}
+              has_global = bool(changed & global_files)
+
+              v1_deps = get_volume_deps("letz.tex")
+              v2_deps = get_volume_deps("letz2.tex")
+              v3_deps = get_volume_deps("letz3.tex")
+
+              rebuild_v1 = has_global or bool(changed & v1_deps)
+              rebuild_v2 = has_global or bool(changed & v2_deps)
+              rebuild_v3 = has_global or bool(changed & v3_deps)
+
+          print(f"Decision -> Volume 1: {rebuild_v1}, Volume 2: {rebuild_v2}, Volume 3: {rebuild_v3}")
+
+          github_output = os.environ.get("GITHUB_OUTPUT")
+          if github_output:
+              with open(github_output, "a", encoding="utf-8") as f:
+                  f.write(f"rebuild_v1={'true' if rebuild_v1 else 'false'}\n")
+                  f.write(f"rebuild_v2={'true' if rebuild_v2 else 'false'}\n")
+                  f.write(f"rebuild_v3={'true' if rebuild_v3 else 'false'}\n")
+          EOF
+
+      - name: Cache Volume 1 PDF
+        id: cache-vol1
+        uses: actions/cache@v4
+        with:
+          path: letz.pdf
+          key: vol1-pdf-${{ hashFiles('letz.tex', 'lessons/lesson[1-9].tex', 'lessons/lesson1[0-9].tex', 'lessons/lesson20.tex') }}
+
+      - name: Cache Volume 2 PDF
+        id: cache-vol2
+        uses: actions/cache@v4
+        with:
+          path: letz2.pdf
+          key: vol2-pdf-${{ hashFiles('letz2.tex', 'lessons/lesson2[1-9].tex', 'lessons/lesson3[0-1].tex') }}
+
+      - name: Cache Volume 3 PDF
+        id: cache-vol3
+        uses: actions/cache@v4
+        with:
+          path: letz3.pdf
+          key: vol3-pdf-${{ hashFiles('letz3.tex', 'lessons/lesson3[2-9].tex', 'lessons/lesson[4-9]*.tex') }}
 
       - name: Install system fonts and LuaLaTeX
         run: |
@@ -47,31 +151,58 @@ jobs:
           sudo fc-cache -fv
           luaotfload-tool --update --verbose=1
 
-      - name: Build Volume 1 (Lessons 1-20)
+      - name: Build or Restore Volume 1 (Lessons 1-20)
         run: |
-          if ! make vol1; then
-            echo "::error::Volume 1 compilation failed"
-            grep -n -C 3 "^!" letz.log | while IFS= read -r line; do echo "::error::$line"; done
-            tail -n 50 letz.log | while IFS= read -r line; do echo "::error::$line"; done
-            exit 1
+          FORCE="${{ inputs.force_rebuild == true || startsWith(github.ref, 'refs/tags/v') }}"
+          REBUILD="${{ steps.detect.outputs.rebuild_v1 == 'true' }}"
+          if [ "$FORCE" = "true" ] || [ "$REBUILD" = "true" ]; then
+            echo "Building Volume 1 from source (changes detected)..."
+            make vol1 || {
+              echo "::error::Volume 1 compilation failed"
+              grep -n -C 3 "^!" letz.log | while IFS= read -r line; do echo "::error::$line"; done
+              tail -n 50 letz.log | while IFS= read -r line; do echo "::error::$line"; done
+              exit 1
+            }
+          elif [ ! -f "letz.pdf" ]; then
+            echo "Volume 1 unchanged; downloading stable release asset..."
+            curl -sSL -o letz.pdf https://github.com/tigran-a/elements-of-luxembourgish/releases/download/v0.1.35/letz.pdf || make vol1
+          else
+            echo "Volume 1 unchanged; restored from cache."
           fi
 
-      - name: Build Volume 2 (Lessons 21-31)
+      - name: Build or Restore Volume 2 (Lessons 21-31)
         run: |
-          if ! make vol2; then
-            echo "::error::Volume 2 compilation failed"
-            grep -n -C 3 "^!" letz2.log | while IFS= read -r line; do echo "::error::$line"; done
-            tail -n 50 letz2.log | while IFS= read -r line; do echo "::error::$line"; done
-            exit 1
+          FORCE="${{ inputs.force_rebuild == true || startsWith(github.ref, 'refs/tags/v') }}"
+          REBUILD="${{ steps.detect.outputs.rebuild_v2 == 'true' }}"
+          if [ "$FORCE" = "true" ] || [ "$REBUILD" = "true" ]; then
+            echo "Building Volume 2 from source (changes detected)..."
+            make vol2 || {
+              echo "::error::Volume 2 compilation failed"
+              grep -n -C 3 "^!" letz2.log | while IFS= read -r line; do echo "::error::$line"; done
+              tail -n 50 letz2.log | while IFS= read -r line; do echo "::error::$line"; done
+              exit 1
+            }
+          elif [ ! -f "letz2.pdf" ]; then
+            echo "Volume 2 unchanged; downloading stable release asset..."
+            curl -sSL -o letz2.pdf https://github.com/tigran-a/elements-of-luxembourgish/releases/download/v0.1.35/letz2.pdf || make vol2
+          else
+            echo "Volume 2 unchanged; restored from cache."
           fi
 
-      - name: Build Volume 3 (Lessons 32+)
+      - name: Build or Restore Volume 3 (Lessons 32+)
         run: |
-          if ! make vol3; then
-            echo "::error::Volume 3 compilation failed"
-            grep -n -C 3 "^!" letz3.log | while IFS= read -r line; do echo "::error::$line"; done
-            tail -n 50 letz3.log | while IFS= read -r line; do echo "::error::$line"; done
-            exit 1
+          FORCE="${{ inputs.force_rebuild == true || startsWith(github.ref, 'refs/tags/v') }}"
+          REBUILD="${{ steps.detect.outputs.rebuild_v3 == 'true' }}"
+          if [ "$FORCE" = "true" ] || [ "$REBUILD" = "true" ] || [ ! -f "letz3.pdf" ]; then
+            echo "Building Volume 3 from source..."
+            make vol3 || {
+              echo "::error::Volume 3 compilation failed"
+              grep -n -C 3 "^!" letz3.log | while IFS= read -r line; do echo "::error::$line"; done
+              tail -n 50 letz3.log | while IFS= read -r line; do echo "::error::$line"; done
+              exit 1
+            }
+          else
+            echo "Volume 3 unchanged; restored from cache."
           fi
 
       - name: Upload Compiled PDFs
