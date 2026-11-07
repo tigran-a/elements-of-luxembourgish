@@ -2,7 +2,7 @@
 
 [![License: CC BY-NC-SA 4.0](https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by-nc-sa/4.0/)
 [![Engine: LuaLaTeX](https://img.shields.io/badge/Engine-LuaLaTeX-blue.svg)](https://www.luatex.org/)
-[![Volumes](https://img.shields.io/badge/Volumes-3%20Volumes%20(37%20Lessons)-brightgreen.svg)](#course-architecture)
+[![Volumes](https://img.shields.io/badge/Volumes-4%20Volumes%20(40%20Lessons)-brightgreen.svg)](#course-architecture)
 [![Build Status](https://img.shields.io/github/actions/workflow/status/tigran-a/elements-of-luxembourgish/compile.yml?branch=main&label=PDF%20Build)](https://github.com/tigran-a/elements-of-luxembourgish/actions)
 
 An open-source, community-driven textbook and reference series for learning the Luxembourgish language (*Lëtzebuergesch*), compiled from pedagogical LaTeX lessons with rich illustrations, audio-based dialogues, and trilingual translations (Luxembourgish, French, English).
@@ -17,9 +17,10 @@ If you just want to read the book, you do not need to install LaTeX. You can dow
 | :--- | :--- | :--- | :--- |
 | **Volume 1** | Lessons 1 – 20 | [**Download `letz.pdf`**](https://github.com/tigran-a/elements-of-luxembourgish/releases/download/v0.1.35/letz.pdf) | Finalized Release |
 | **Volume 2** | Lessons 21 – 31 | [**Download `letz2.pdf`**](https://github.com/tigran-a/elements-of-luxembourgish/releases/download/v0.1.35/letz2.pdf) | Finalized Release |
-| **Volume 3** | Lessons 32 – 37+ | [**Download `letz3.pdf`**](https://github.com/tigran-a/elements-of-luxembourgish/releases/latest/download/letz3.pdf) | Active / Growing |
+| **Volume 3** | Lessons 32 – 39 | [**Download `letz3.pdf`**](https://github.com/tigran-a/elements-of-luxembourgish/releases/latest/download/letz3.pdf) | Finalized Release |
+| **Volume 4** | Lessons 40+ | [**Download `letz4.pdf`**](https://github.com/tigran-a/elements-of-luxembourgish/releases/latest/download/letz4.pdf) | Active / Growing |
 
-> **Note on Volumes:** The division into Volumes 1, 2, and 3 is **chronological, not level-specific**. Volume 1 is not "lower level" or strictly A1 compared to Volume 3. Rather, each volume contains a rich, accessible cross-section of everyday themes, grammar points, illustrated vocabulary, and conversational dialogues compiled as the course progresses. Volumes 1 and 2 are finalized and stable; new lessons are continuously added to Volume 3.
+> **Note on Volumes:** The division into Volumes 1, 2, 3, and 4 is **chronological, not level-specific**. Volume 1 is not "lower level" or strictly A1 compared to Volume 4. Rather, each volume contains a rich, accessible cross-section of everyday themes, grammar points, illustrated vocabulary, and conversational dialogues compiled as the course progresses. Volumes 1, 2, and 3 are finalized and stable; new lessons are continuously added to Volume 4.
 
 ---
 
@@ -51,11 +52,12 @@ To ensure highest orthographic and lexical standard, the materials in this cours
 ## Repository Structure
 
 ```text
-├── lessons/               # Individual lesson LaTeX files (lesson1.tex - lesson37.tex)
+├── lessons/               # Individual lesson LaTeX files (lesson1.tex - lesson40.tex)
 ├── vokab_300dpi/          # High-resolution (300 DPI) vocabulary dictionary images
 ├── letz.tex               # Master document for Volume 1 (Lessons 1-20)
 ├── letz2.tex              # Master document for Volume 2 (Lessons 21-31)
-├── letz3.tex              # Master document for Volume 3 (Lessons 32+)
+├── letz3.tex              # Master document for Volume 3 (Lessons 32-39)
+├── letz4.tex              # Master document for Volume 4 (Lessons 40+)
 ├── saz_spellcheck.py      # Automated spellchecker & Eifeler rule validator (saz.lu API)
 ├── saz_concordancer.py    # Concordancer tool for authentic sentence corpus search
 ├── prepare_release.py     # Release asset preparation & dynamic volume link resolver
@@ -101,12 +103,13 @@ python3 saz_concordancer.py "Noperen" --limit 5
 make vol1    # Generates letz.pdf
 make vol2    # Generates letz2.pdf
 make vol3    # Generates letz3.pdf
+make vol4    # Generates letz4.pdf
 
-# Compile all three volumes
+# Compile all four volumes
 make all
 
 # Validate spelling on a lesson
-make check LESSON=lessons/lesson35.tex
+make check LESSON=lessons/lesson40.tex
 
 # Clean temporary build artifacts
 make clean
@@ -114,8 +117,8 @@ make clean
 
 ### Manual Compilation
 ```bash
-lualatex -interaction=nonstopmode letz3.tex
-lualatex -interaction=nonstopmode letz3.tex   # Run twice to resolve TOC and cross-references
+lualatex -interaction=nonstopmode letz4.tex
+lualatex -interaction=nonstopmode letz4.tex   # Run twice to resolve TOC and cross-references
 ```
 
 ---

@@ -76,7 +76,7 @@ jobs:
           changed = get_changed_files()
           if changed is None:
               print("Full rebuild triggered (could not determine diff).")
-              rebuild_v1, rebuild_v2, rebuild_v3 = True, True, True
+              rebuild_v1, rebuild_v2, rebuild_v3, rebuild_v4 = True, True, True, True
           else:
               print("Files changed in this push:")
               for f in sorted(changed):
@@ -88,12 +88,14 @@ jobs:
               v1_deps = get_volume_deps("letz.tex")
               v2_deps = get_volume_deps("letz2.tex")
               v3_deps = get_volume_deps("letz3.tex")
+              v4_deps = get_volume_deps("letz4.tex")
 
               rebuild_v1 = has_global or bool(changed & v1_deps)
               rebuild_v2 = has_global or bool(changed & v2_deps)
               rebuild_v3 = has_global or bool(changed & v3_deps)
+              rebuild_v4 = has_global or bool(changed & v4_deps)
 
-          print(f"Decision -> Volume 1: {rebuild_v1}, Volume 2: {rebuild_v2}, Volume 3: {rebuild_v3}")
+          print(f"Decision -> Volume 1: {rebuild_v1}, Volume 2: {rebuild_v2}, Volume 3: {rebuild_v3}, Volume 4: {rebuild_v4}")
 
           github_output = os.environ.get("GITHUB_OUTPUT")
           if github_output:
@@ -101,6 +103,7 @@ jobs:
                   f.write(f"rebuild_v1={'true' if rebuild_v1 else 'false'}\n")
                   f.write(f"rebuild_v2={'true' if rebuild_v2 else 'false'}\n")
                   f.write(f"rebuild_v3={'true' if rebuild_v3 else 'false'}\n")
+                  f.write(f"rebuild_v4={'true' if rebuild_v4 else 'false'}\n")
           EOF
 
       - name: Cache Volume 1 PDF
@@ -122,7 +125,14 @@ jobs:
         uses: actions/cache@v4
         with:
           path: letz3.pdf
-          key: vol3-pdf-${{ hashFiles('letz3.tex', 'lessons/lesson3[2-9].tex', 'lessons/lesson[4-9]*.tex') }}
+          key: vol3-pdf-${{ hashFiles('letz3.tex', 'lessons/lesson3[2-9].tex') }}
+
+      - name: Cache Volume 4 PDF
+        id: cache-vol4
+        uses: actions/cache@v4
+        with:
+          path: letz4.pdf
+          key: vol4-pdf-${{ hashFiles('letz4.tex', 'lessons/lesson[4-9]*.tex') }}
 
       - name: Install system fonts and LuaLaTeX
         run: |
@@ -188,20 +198,39 @@ jobs:
             echo "Volume 2 unchanged; restored from cache."
           fi
 
-      - name: Build or Restore Volume 3 (Lessons 32+)
+      - name: Build or Restore Volume 3 (Lessons 32-39)
         run: |
           FORCE="${{ inputs.force_rebuild == true }}"
           REBUILD="${{ steps.detect.outputs.rebuild_v3 == 'true' }}"
-          if [ "$FORCE" = "true" ] || [ "$REBUILD" = "true" ] || [ ! -f "letz3.pdf" ]; then
-            echo "Building Volume 3 from source..."
+          if [ "$FORCE" = "true" ] || [ "$REBUILD" = "true" ]; then
+            echo "Building Volume 3 from source (changes detected)..."
             make vol3 || {
               echo "::error::Volume 3 compilation failed"
               grep -n -C 3 "^!" letz3.log | while IFS= read -r line; do echo "::error::$line"; done
               tail -n 50 letz3.log | while IFS= read -r line; do echo "::error::$line"; done
               exit 1
             }
+          elif [ ! -f "letz3.pdf" ]; then
+            echo "Volume 3 unchanged; downloading latest release asset..."
+            curl -sSL -o letz3.pdf https://github.com/tigran-a/elements-of-luxembourgish/releases/latest/download/letz3.pdf || make vol3
           else
             echo "Volume 3 unchanged; restored from cache."
+          fi
+
+      - name: Build or Restore Volume 4 (Lessons 40+)
+        run: |
+          FORCE="${{ inputs.force_rebuild == true }}"
+          REBUILD="${{ steps.detect.outputs.rebuild_v4 == 'true' }}"
+          if [ "$FORCE" = "true" ] || [ "$REBUILD" = "true" ] || [ ! -f "letz4.pdf" ]; then
+            echo "Building Volume 4 from source..."
+            make vol4 || {
+              echo "::error::Volume 4 compilation failed"
+              grep -n -C 3 "^!" letz4.log | while IFS= read -r line; do echo "::error::$line"; done
+              tail -n 50 letz4.log | while IFS= read -r line; do echo "::error::$line"; done
+              exit 1
+            }
+          else
+            echo "Volume 4 unchanged; restored from cache."
           fi
 
       - name: Upload Compiled PDFs
@@ -212,6 +241,7 @@ jobs:
             letz.pdf
             letz2.pdf
             letz3.pdf
+            letz4.pdf
 
       - name: Upload Logs on Failure
         if: failure()
@@ -222,6 +252,7 @@ jobs:
             letz.log
             letz2.log
             letz3.log
+            letz4.log
 
       - name: Prepare Release Assets
         if: startsWith(github.ref, 'refs/tags/v')
@@ -230,6 +261,7 @@ jobs:
           REBUILD_V1: ${{ steps.detect.outputs.rebuild_v1 }}
           REBUILD_V2: ${{ steps.detect.outputs.rebuild_v2 }}
           REBUILD_V3: ${{ steps.detect.outputs.rebuild_v3 }}
+          REBUILD_V4: ${{ steps.detect.outputs.rebuild_v4 }}
           FORCE_REBUILD: ${{ inputs.force_rebuild }}
         run: |
           python3 prepare_release.py
