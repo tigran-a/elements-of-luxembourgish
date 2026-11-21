@@ -23,7 +23,7 @@ def main():
     # Fallback URLs if API query fails
     v1_url = f"https://github.com/{repo}/releases/download/v0.1.35/letz.pdf"
     v2_url = f"https://github.com/{repo}/releases/download/v0.1.35/letz2.pdf"
-    v3_url = f"https://github.com/{repo}/releases/latest/download/letz3.pdf"
+    v3_url = f"https://github.com/{repo}/releases/download/v0.1.39/letz3.pdf"
 
     # Query GitHub API to locate the latest published releases containing Volumes 1, 2, and 3
     try:
